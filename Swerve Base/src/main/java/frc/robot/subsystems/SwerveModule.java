@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax.ControlType;
 //wpi
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -81,23 +82,25 @@ public class SwerveModule extends SubsystemBase {
      * Turns SwerveModuleState into turning and driving speed
      */
     public void setDesiredState(SwerveModuleState state) {
-        
+        setAngle(state);
+        setSpeed(state);
     }
     /**
      * Set a new angle to the turning motor
      */
     public void setAngle(SwerveModuleState state) {
         double currentAngle = getTurningPosition();
+        double delta = PID_TURNING.calculate(currentAngle, state.angle.getRadians());
 
-
-
-        MOTOR_TURN.set();
+        MOTOR_TURN.set(delta < 0.01 ? 0.0 : delta); // if delta is less than 1% output, just stop the motor so it doesn't jitter
     }
     /**
      * Set new speed for the driving motors
      */
     public void setSpeed(SwerveModuleState state) {
-        MOTOR_DRIVE.setRefere();
+
+        //the speed limit is full power 
+        MOTOR_DRIVE.set(state.speedMetersPerSecond/Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE);
     }
 
 

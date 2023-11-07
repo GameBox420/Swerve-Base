@@ -17,6 +17,18 @@ import edu.wpi.first.math.geometry.Translation2d;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class Kinematics {
+    public static final double kTrackWidth = Units.inchesToMeters(22.5); // Distance between right and left wheels
+    public static final double kWheelBase = Units.inchesToMeters(22.5); // Distance between front and back wheels
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+      new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+      new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+      new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+      new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+  }
+
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
@@ -40,14 +52,6 @@ public final class Constants {
 
   public static class SwerveSubsystemConstants {
 
-    public static final double kTrackWidth = Units.inchesToMeters(22.5); // Distance between right and left wheels
-    public static final double kWheelBase = Units.inchesToMeters(22.5); // Distance between front and back wheels
-
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
 
     // DRIVE Motor Ports
     public static final int ID_FRONT_LEFT_DRIVE = 4;
