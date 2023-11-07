@@ -26,7 +26,15 @@ public class SwerveModule extends SubsystemBase {
 
     private final CANCoder ENCODER_ABSOLUTE;
 
-
+    /**
+    *@param int ID_MOTOR_DRIVE,
+    *@param    boolean REVERSE_MOTOR_DRIVE,
+    *@param    int ID_MOTOR_TURN,
+    *@param    boolean REVERSE_MOTOR_TURN,
+    *@param    int ID_ENCODER_ABSOLUTE,
+    *@param    boolean REVERSE_ENCODER_ABSOLUTE,
+    *@param    double OFFSET_ENCODER_ABSOLUTE
+    */
     public SwerveModule(
         int ID_MOTOR_DRIVE,
         boolean REVERSE_MOTOR_DRIVE,
@@ -61,36 +69,66 @@ public class SwerveModule extends SubsystemBase {
         PID_TURNING.enableContinuousInput(-Math.PI, Math.PI);
     }
 
+    /** 
+     * Resets drive encoder to 0, and turn encoder to absolute encoders value
+    */
     public void resetEncoders() {
         ENCODER_DRIVE.setPosition(0);
-        ENCODER_TURN.setPosition(getAbsoluteEncoderRad());
+        ENCODER_TURN.setPosition(getAbsoluteEncoder());
     }
 
+    /**
+     * Turns SwerveModuleState into turning and driving speed
+     */
     public void setDesiredState(SwerveModuleState state) {
+        
+    }
+    /**
+     * Set a new angle to the turning motor
+     */
+    public void setAngle(SwerveModuleState state) {
+        double currentAngle = getTurningPosition();
 
+
+
+        MOTOR_TURN.set();
+    }
+    /**
+     * Set new speed for the driving motors
+     */
+    public void setSpeed(SwerveModuleState state) {
+        MOTOR_DRIVE.setRefere();
     }
 
-    public void stop() {
 
-    }
-
+    /**
+     * @return drive position in meters
+     */
     public double getDrivePosition(){
         return ENCODER_DRIVE.getPosition();
     }
-
+    /**
+     * @return turning position in radians
+     */
     public double getTurningPosition(){
         return ENCODER_TURN.getPosition();
     }
-
+    /**
+     * @return meters per second
+     */
     public double getDriveVelocity(){
         return ENCODER_DRIVE.getVelocity();
     }
-
+    /**
+     * @return radians per second
+     */
     public double getTurningVelocity(){
         return ENCODER_DRIVE.getVelocity();
     }
-
-    public double getAbsoluteEncoderRad(){
+    /**
+     * @return absolute value in radians
+     */
+    public double getAbsoluteEncoder(){
         return Math.toRadians(ENCODER_ABSOLUTE.getAbsolutePosition());
     }
 

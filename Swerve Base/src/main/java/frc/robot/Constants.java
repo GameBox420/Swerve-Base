@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.geometry.Translation2d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -38,7 +40,61 @@ public final class Constants {
 
   public static class SwerveSubsystemConstants {
 
+    public static final double kTrackWidth = Units.inchesToMeters(22.5); // Distance between right and left wheels
+    public static final double kWheelBase = Units.inchesToMeters(22.5); // Distance between front and back wheels
 
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
 
+    // DRIVE Motor Ports
+    public static final int ID_FRONT_LEFT_DRIVE = 4;
+    public static final int ID_BACK_LEFT_DRIVE = 2;
+    public static final int ID_FRONT_RIGHT_DRIVE = 6;
+    public static final int ID_BACK_RIGHT_DRIVE = 8;
+
+    // TURNING Motor Ports
+    public static final int ID_FRONT_LEFT_TURN = 3;
+    public static final int ID_BACK_LEFT_TURN = 1;
+    public static final int ID_FRONT_RIGHT_TURN = 5;
+    public static final int ID_BACK_RIGHT_TURN = 7;
+
+    // CANCoder Ids
+    public static final int ID_FRONT_LEFT_ENCODER_ABSOLUTE = 6;
+    public static final int ID_BACK_LEFT_ENCODER_ABSOLUTE = 8;
+    public static final int ID_FRONT_RIGHT_ENCODER_ABSOLUTE = 5;
+    public static final int ID_BACK_RIGHT_ENCODER_ABSOLUTE = 7;
+
+    // Invert booleans | We use MK4i modules so the turning motors are inverted
+    public static final boolean REVERSED_ENCODER_TURN = true;
+    public static final boolean REVERSED_ENCODER_DRIVE = false;
+    public static final boolean REVERSED_ENCODER_ABSOLUTE = false;
+    public static final boolean REVERSED_GYRO = true;
+
+    // Turning encoder offsets
+
+    /* 
+     * TODO:
+     * Are offsets neccesary?
+     * I think if we simply copy the position of the absolute encoder to the turning encoders, it would acomplish the same thing, i think???
+    */
+
+    public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
+    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(0.0);
+    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(0.0);
+    public static final double OFFSET_BACK_RIGHT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
+
+    // Robot drive speeds
+    public static final double LIMIT_HARD_SPEED_DRIVE = 3.6; // hard limit for speed of chassis
+    public static final double LIMIT_SOFT_SPEED_DRIVE = 2.0; // soft limit for speed of chassis
+
+    // Robot turning speeds
+    public static final double LIMIT_SOFT_SPEED_TURN = 2 * 2*Math.PI; // soft limit for module rotation
+
+    // Robot acceleration
+    public static final double LIMIT_SOFT_ACCELERATION_SPEED = 3; // soft limit for acceleration (M/S^2)
+    public static final double LIMIT_SOFT_ACCELERATION_TURN = 3;  // soft limit for acceleration (M/S^2)
   }
 }
