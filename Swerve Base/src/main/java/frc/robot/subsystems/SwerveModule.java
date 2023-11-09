@@ -55,6 +55,7 @@ public class SwerveModule extends SubsystemBase {
         this.MOTOR_DRIVE.restoreFactoryDefaults();
         //init
         MOTOR_DRIVE.setInverted(REVERSE_MOTOR_DRIVE);
+        MOTOR_DRIVE.setClosedLoopRampRate(2);
         this.ENCODER_DRIVE = MOTOR_DRIVE.getEncoder();
         ENCODER_DRIVE.setPositionConversionFactor(ModuleConstants.DriveEncoderRot2Meter);
 
@@ -64,6 +65,7 @@ public class SwerveModule extends SubsystemBase {
         this.MOTOR_TURN.restoreFactoryDefaults();
         //init
         MOTOR_TURN.setInverted(REVERSE_MOTOR_TURN);
+        MOTOR_TURN.setClosedLoopRampRate(3);
         this.ENCODER_TURN = MOTOR_TURN.getEncoder();
         ENCODER_TURN.setPositionConversionFactor(ModuleConstants.TurningEncoderRot2Rad);
 
