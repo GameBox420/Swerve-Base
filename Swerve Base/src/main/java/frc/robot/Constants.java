@@ -22,10 +22,10 @@ public final class Constants {
     public static final double kTrackWidth = Units.inchesToMeters(22.5); // Distance between right and left wheels
     public static final double kWheelBase = Units.inchesToMeters(22.5); // Distance between front and back wheels
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-      new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-      new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+      new Translation2d(-kWheelBase / 2, +kTrackWidth / 2),
+      new Translation2d(+kWheelBase / 2, +kTrackWidth / 2),
       new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-      new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+      new Translation2d(kWheelBase / 2, -kTrackWidth / 2));
   }
 
 
@@ -75,7 +75,14 @@ public final class Constants {
     public static final boolean REVERSED_ENCODER_TURN = true;
     public static final boolean REVERSED_ENCODER_DRIVE = false;
     public static final boolean REVERSED_ENCODER_ABSOLUTE = false;
-    public static final boolean REVERSED_GYRO = true;
+    public static final boolean REVERSED_GYRO = false;
+
+    // Invert Specific Motors
+
+    public static final boolean REVERSED_FRONT_LEFT_MOTOR_DRIVE = false;
+    public static final boolean REVERSED_FRONT_RIGHT_MOTOR_DRIVE = false;
+    public static final boolean REVERSED_BACK_LEFT_MOTOR_DRIVE = true;
+    public static final boolean REVERSED_BACK_RIGHT_MOTOR_DRIVE = true;
 
     // Turning encoder offsets
 
@@ -86,19 +93,32 @@ public final class Constants {
     */
 
     public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
-    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(0.0);
-    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(0.0);
+    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(180);
+    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(115);
     public static final double OFFSET_BACK_RIGHT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
 
     // Robot drive speeds
     public static final double LIMIT_HARD_SPEED_DRIVE = 3.6; // hard limit for speed of chassis
-    public static final double LIMIT_SOFT_SPEED_DRIVE = 2.0; // soft limit for speed of chassis
+    public static final double LIMIT_SOFT_SPEED_DRIVE = 1.0; // soft limit for speed of chassis
 
     // Robot turning speeds
-    public static final double LIMIT_SOFT_SPEED_TURN = 2 * 2*Math.PI; // soft limit for module rotation
+    public static final double LIMIT_SOFT_SPEED_TURN = 1 * 2*Math.PI; // soft limit for module rotation
 
     // Robot acceleration
-    public static final double LIMIT_SOFT_ACCELERATION_SPEED = 3; // soft limit for acceleration (M/S^2)
-    public static final double LIMIT_SOFT_ACCELERATION_TURN = 3;  // soft limit for acceleration (M/S^2)
+    public static final double LIMIT_SOFT_ACCELERATION_SPEED = 1; // soft limit for acceleration (M/S^2)
+    public static final double LIMIT_SOFT_ACCELERATION_TURN = 1;  // soft limit for acceleration (M/S^2)
+  }
+  public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+    public static final double kDeadband = 0.05;
+
+    // Joysticks
+    public static final int kDriverYAxis = 1;
+    public static final int kDriverXAxis = 0;
+    public static final int kDriverRotAxis = 4;
+
+    // Buttons
+    public static final int kDriverFieldOrientedButtonId = 1;
+    public static final int kDriverResetGyroButtonId = 2;
   }
 }

@@ -9,7 +9,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.ControlType;
 //wpi
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //robot
 import frc.robot.Constants;
@@ -26,6 +28,7 @@ public class SwerveModule extends SubsystemBase {
     private final PIDController PID_TURNING;
 
     private final CANCoder ENCODER_ABSOLUTE;
+    private final double OFFSET_ABSOLUTEENCODER;
 
     /**
     *@param int ID_MOTOR_DRIVE,
@@ -48,22 +51,26 @@ public class SwerveModule extends SubsystemBase {
 
         //init the drive motor and encoder
         this.MOTOR_DRIVE =new CANSparkMax(ID_MOTOR_DRIVE, MotorType.kBrushless);
+        //reset to defaults
+        this.MOTOR_DRIVE.restoreFactoryDefaults();
+        //init
         MOTOR_DRIVE.setInverted(REVERSE_MOTOR_DRIVE);
-
         this.ENCODER_DRIVE = MOTOR_DRIVE.getEncoder();
         ENCODER_DRIVE.setPositionConversionFactor(ModuleConstants.DriveEncoderRot2Meter);
 
-
         //init the turning motor and encoder
         this.MOTOR_TURN = new CANSparkMax(ID_MOTOR_TURN, MotorType.kBrushless);
+        //reset to defaults
+        this.MOTOR_TURN.restoreFactoryDefaults();
+        //init
         MOTOR_TURN.setInverted(REVERSE_MOTOR_TURN);
-
         this.ENCODER_TURN = MOTOR_TURN.getEncoder();
         ENCODER_TURN.setPositionConversionFactor(ModuleConstants.TurningEncoderRot2Rad);
 
         //init absolute encoder
         this.ENCODER_ABSOLUTE = new CANCoder(ID_ENCODER_ABSOLUTE);
         ENCODER_ABSOLUTE.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        this.OFFSET_ABSOLUTEENCODER = OFFSET_ENCODER_ABSOLUTE;
 
         //init PID for turning
         this.PID_TURNING = new PIDController(Constants.ModuleConstants.TURNING_Proportional,Constants.ModuleConstants.TURNING_Integral ,Constants.ModuleConstants.TURNING_Derivitive);
@@ -82,8 +89,21 @@ public class SwerveModule extends SubsystemBase {
      * Turns SwerveModuleState into turning and driving speed
      */
     public void setDesiredState(SwerveModuleState state) {
+
+        if (state.speedMetersPerSecond < 0.01) {
+            state = new SwerveModuleState(0.0,new Rotation2d(getTurningPosition()));
+        }
+
         setAngle(state);
         setSpeed(state);
+
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] angle", getTurningPosition());
+
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] absolute angle", getAbsoluteEncoder());
+
+        SmartDashboard.putString("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] state", state.toString());
+
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] offset", OFFSET_ABSOLUTEENCODER);
     }
     /**
      * Set a new angle to the turning motor
@@ -92,7 +112,8 @@ public class SwerveModule extends SubsystemBase {
         double currentAngle = getTurningPosition();
         double delta = PID_TURNING.calculate(currentAngle, state.angle.getRadians());
 
-        MOTOR_TURN.set(delta < 0.01 ? 0.0 : delta); // if delta is less than 1% output, just stop the motor so it doesn't jitter
+        MOTOR_TURN.set(delta);
+        //MOTOR_TURN.set(delta < 0.01 ? 0.0 : delta); // if delta is less than 1% output, just stop the motor so it doesn't jitter
     }
     /**
      * Set new speed for the driving motors
@@ -102,7 +123,6 @@ public class SwerveModule extends SubsystemBase {
         //the speed limit is full power 
         MOTOR_DRIVE.set(state.speedMetersPerSecond/Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE);
     }
-
 
     /**
      * @return drive position in meters
@@ -132,7 +152,7 @@ public class SwerveModule extends SubsystemBase {
      * @return absolute value in radians
      */
     public double getAbsoluteEncoder(){
-        return Math.toRadians(ENCODER_ABSOLUTE.getAbsolutePosition());
+        return Math.toRadians(ENCODER_ABSOLUTE.getAbsolutePosition()) + OFFSET_ABSOLUTEENCODER;
     }
 
 }

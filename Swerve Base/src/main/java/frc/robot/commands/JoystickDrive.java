@@ -28,13 +28,14 @@ public class JoystickDrive extends CommandBase {
         this.SUPPLIER_ySpeed = ySpeed;
         this.SUPPLIER_zSpeed = zSpeed;
         this.SUPPLIER_Field_Oriented = Field_Oriented;
+        addRequirements(subsystem);
     }
 
     @Override
     public void execute() {
-        double xSpeed = SUPPLIER_xSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE;
-        double ySpeed = SUPPLIER_ySpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE;
-        double rotSpeed = SUPPLIER_zSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_TURN;
+        double xSpeed = SUPPLIER_xSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2;
+        double ySpeed = SUPPLIER_ySpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2;
+        double rotSpeed = SUPPLIER_zSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_TURN * 0.2;
         
         ChassisSpeeds chassisSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, subsystem.getRotation2d());
 
