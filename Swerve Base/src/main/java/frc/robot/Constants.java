@@ -81,7 +81,7 @@ public final class Constants {
 
     public static final boolean REVERSED_FRONT_LEFT_MOTOR_DRIVE = false;
     public static final boolean REVERSED_FRONT_RIGHT_MOTOR_DRIVE = false;
-    public static final boolean REVERSED_BACK_LEFT_MOTOR_DRIVE = true;
+    public static final boolean REVERSED_BACK_LEFT_MOTOR_DRIVE = false;
     public static final boolean REVERSED_BACK_RIGHT_MOTOR_DRIVE = true;
 
     // Turning encoder offsets
@@ -93,8 +93,8 @@ public final class Constants {
     */
 
     public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
-    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(180);
-    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(115);
+    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(0.0);
+    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(50);
     public static final double OFFSET_BACK_RIGHT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
 
     // Robot drive speeds

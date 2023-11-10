@@ -65,7 +65,7 @@ public class SwerveModule extends SubsystemBase {
         this.MOTOR_TURN.restoreFactoryDefaults();
         //init
         MOTOR_TURN.setInverted(REVERSE_MOTOR_TURN);
-        MOTOR_TURN.setClosedLoopRampRate(3);
+        //MOTOR_TURN.setClosedLoopRampRate(3);
         this.ENCODER_TURN = MOTOR_TURN.getEncoder();
         ENCODER_TURN.setPositionConversionFactor(ModuleConstants.TurningEncoderRot2Rad);
 
@@ -92,9 +92,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setDesiredState(SwerveModuleState state) {
 
-        if (state.speedMetersPerSecond < 0.01) {
-            state = new SwerveModuleState(0.0,new Rotation2d(getTurningPosition()));
-        }
+        state = SwerveModuleState.optimize(state, getModuleState().angle);
 
         setAngle(state);
         setSpeed(state);
@@ -111,6 +109,7 @@ public class SwerveModule extends SubsystemBase {
      * Set a new angle to the turning motor
      */
     public void setAngle(SwerveModuleState state) {
+
         double currentAngle = getTurningPosition();
         double delta = PID_TURNING.calculate(currentAngle, state.angle.getRadians());
 
@@ -155,6 +154,9 @@ public class SwerveModule extends SubsystemBase {
      */
     public double getAbsoluteEncoder(){
         return Math.toRadians(ENCODER_ABSOLUTE.getAbsolutePosition()) + OFFSET_ABSOLUTEENCODER;
+    }
+    public SwerveModuleState getModuleState() {
+        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
     }
 
 }
