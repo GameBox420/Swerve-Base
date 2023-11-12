@@ -111,7 +111,7 @@ public class SwerveDrive extends SubsystemBase {
 
 
     public Command zeroRobotHeading() {
-        return Commands.runOnce(() -> navX.reset());
+        return Commands.runOnce(() -> navX.zeroYaw());
     }
     public Command zeroModuleAngles() {
         return Commands.runOnce(()-> zeroModules());
