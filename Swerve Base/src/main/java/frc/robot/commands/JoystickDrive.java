@@ -3,7 +3,7 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+//import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.lib.Constants;
@@ -15,9 +15,9 @@ public class JoystickDrive extends CommandBase {
     private final DoubleSupplier SUPPLIER_xSpeed;
     private final DoubleSupplier SUPPLIER_ySpeed;
     private final DoubleSupplier SUPPLIER_zSpeed;
-    private final BooleanSupplier SUPPLIER_Field_Oriented;
+    //private final BooleanSupplier SUPPLIER_Field_Oriented;
 
-    private final SlewRateLimiter xLimiter, yLimiter, zLimiter;
+    //private final SlewRateLimiter xLimiter, yLimiter, zLimiter;
 
     public JoystickDrive(
         SwerveDrive m_subsystem,
@@ -30,12 +30,12 @@ public class JoystickDrive extends CommandBase {
         this.SUPPLIER_xSpeed = xSpeed;
         this.SUPPLIER_ySpeed = ySpeed;
         this.SUPPLIER_zSpeed = zSpeed;
-        this.SUPPLIER_Field_Oriented = Field_Oriented;
+        //this.SUPPLIER_Field_Oriented = Field_Oriented;
         addRequirements(subsystem);
 
-        this.xLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_SPEED);
-        this.yLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_SPEED);
-        this.zLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_TURN);
+        //this.xLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_SPEED);
+        //this.yLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_SPEED);
+        //this.zLimiter = new SlewRateLimiter(Constants.SwerveSubsystemConstants.LIMIT_SOFT_ACCELERATION_TURN);
     }
 
     @Override
