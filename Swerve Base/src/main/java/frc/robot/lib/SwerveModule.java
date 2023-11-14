@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.lib;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 //pheonix
 import com.ctre.phoenix.sensors.CANCoder;
@@ -6,16 +6,15 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMax.ControlType;
+//import com.revrobotics.CANSparkMax.ControlType;
 //wpi
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//robot
-import frc.robot.Constants;
-import frc.robot.Constants.ModuleConstants;
+import frc.robot.lib.Constants.ModuleConstants;
 
 public class SwerveModule extends SubsystemBase {
     
@@ -48,7 +47,6 @@ public class SwerveModule extends SubsystemBase {
         boolean REVERSE_ENCODER_ABSOLUTE,
         double OFFSET_ENCODER_ABSOLUTE
     ) {
-
         //init the drive motor and encoder
         this.MOTOR_DRIVE =new CANSparkMax(ID_MOTOR_DRIVE, MotorType.kBrushless);
         //reset to defaults
@@ -57,8 +55,7 @@ public class SwerveModule extends SubsystemBase {
         MOTOR_DRIVE.setInverted(REVERSE_MOTOR_DRIVE);
         MOTOR_DRIVE.setClosedLoopRampRate(2);
         this.ENCODER_DRIVE = MOTOR_DRIVE.getEncoder();
-        ENCODER_DRIVE.setPositionConversionFactor(ModuleConstants.DriveEncoderRot2Meter);
-
+        ENCODER_DRIVE.setPositionConversionFactor(ModuleConstants.MODULE_DRIVE_ROTATIONS_TO_METERS);
         //init the turning motor and encoder
         this.MOTOR_TURN = new CANSparkMax(ID_MOTOR_TURN, MotorType.kBrushless);
         //reset to defaults
@@ -67,18 +64,15 @@ public class SwerveModule extends SubsystemBase {
         MOTOR_TURN.setInverted(REVERSE_MOTOR_TURN);
         //MOTOR_TURN.setClosedLoopRampRate(3);
         this.ENCODER_TURN = MOTOR_TURN.getEncoder();
-        ENCODER_TURN.setPositionConversionFactor(ModuleConstants.TurningEncoderRot2Rad);
-
+        ENCODER_TURN.setPositionConversionFactor(ModuleConstants.MODULE_TURN_ROTATIONS_TO_RADIANS);
         //init absolute encoder
         this.ENCODER_ABSOLUTE = new CANCoder(ID_ENCODER_ABSOLUTE);
         ENCODER_ABSOLUTE.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         this.OFFSET_ABSOLUTEENCODER = OFFSET_ENCODER_ABSOLUTE;
-
         //init PID for turning
-        this.PID_TURNING = new PIDController(Constants.ModuleConstants.TURNING_Proportional,Constants.ModuleConstants.TURNING_Integral ,Constants.ModuleConstants.TURNING_Derivitive);
+        this.PID_TURNING = new PIDController(PID_Config.SwereModule.ModuleTurning.Proportional,PID_Config.SwereModule.ModuleTurning.Integral,PID_Config.SwereModule.ModuleTurning.Derivitive);
         PID_TURNING.enableContinuousInput(-Math.PI, Math.PI);
     }
-
     /** 
      * Resets drive encoder to 0, and turn encoder to absolute encoders value
     */
@@ -86,7 +80,6 @@ public class SwerveModule extends SubsystemBase {
         ENCODER_DRIVE.setPosition(0);
         ENCODER_TURN.setPosition(getAbsoluteEncoder());
     }
-
     /**
      * Turns SwerveModuleState into turning and driving speed
      */
@@ -155,8 +148,14 @@ public class SwerveModule extends SubsystemBase {
     public double getAbsoluteEncoder(){
         return Math.toRadians(ENCODER_ABSOLUTE.getAbsolutePosition()) + OFFSET_ABSOLUTEENCODER;
     }
+    /**
+     * @return swerve module state (Speed in meters per second, Angle in radians)
+     */
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+    }
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(getDrivePosition(),new Rotation2d(getTurningPosition()));
     }
 
 }

@@ -4,8 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.Constants.*;
 import frc.robot.commands.*;
+import frc.robot.lib.Constants;
+import frc.robot.lib.LimeLight;
+import frc.robot.lib.Constants.*;
 import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,24 +24,25 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveDrive SUBSYSTEM_SWERVEDRIVE = new SwerveDrive();
+  private final LimeLight SUBSYSTEM_LIMELIGHT = new LimeLight();
 
-  private final CommandJoystick JOYSTICK_DRIVER = new CommandJoystick(0);
+  private final CommandJoystick JOYSTICK_DRIVER = new CommandJoystick(Constants.OIConstants.CONTROLLER_DRIVER_ID);
+
+  Trigger DRIVER_A = new Trigger(JOYSTICK_DRIVER.button(1));
+  Trigger DRIVER_B = new Trigger(JOYSTICK_DRIVER.button(2));
+  Trigger DRIVER_LB= new Trigger(JOYSTICK_DRIVER.button(5));
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
     SUBSYSTEM_SWERVEDRIVE.setDefaultCommand(
       new JoystickDrive(
         SUBSYSTEM_SWERVEDRIVE, 
-        () -> -JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.kDriverXAxis), 
-        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.kDriverYAxis), 
-        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.kDriverRotAxis), 
+        () -> -JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_X), 
+        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_Y), 
+        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_Z), 
         () -> true)
     );
-
-
-
     // Configure the trigger bindings
     configureBindings();
   }
@@ -57,13 +60,11 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-    Trigger DRIVER_A = new Trigger(JOYSTICK_DRIVER.button(1));
-    Trigger DRIVER_B = new Trigger(JOYSTICK_DRIVER.button(2));
+
 
     DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());
-
-
     DRIVER_B.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroRobotHeading());
+    DRIVER_LB.onTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

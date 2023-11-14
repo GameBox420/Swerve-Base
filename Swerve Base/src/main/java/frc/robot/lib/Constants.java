@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package frc.robot.lib;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -19,35 +19,25 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
 
   public static final class Kinematics {
-    public static final double kTrackWidth = Units.inchesToMeters(22.5); // Distance between right and left wheels
-    public static final double kWheelBase = Units.inchesToMeters(22.5); // Distance between front and back wheels
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-      new Translation2d(-kWheelBase / 2, +kTrackWidth / 2),
-      new Translation2d(+kWheelBase / 2, +kTrackWidth / 2),
-      new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-      new Translation2d(kWheelBase / 2, -kTrackWidth / 2));
-  }
-
-
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final double KINEMATICS_CHASSIS_WIDTH = Units.inchesToMeters(22.5); // Distance between right and left wheels
+    public static final double KINEMATICS_CHASSIS_LENGTH = Units.inchesToMeters(22.5); // Distance between front and back wheels
+    public static final SwerveDriveKinematics KINEMATICS_DRIVE_CHASSIS = new SwerveDriveKinematics(
+      new Translation2d(-KINEMATICS_CHASSIS_WIDTH / 2, +KINEMATICS_CHASSIS_LENGTH / 2),
+      new Translation2d(+KINEMATICS_CHASSIS_WIDTH / 2, +KINEMATICS_CHASSIS_LENGTH / 2),
+      new Translation2d(-KINEMATICS_CHASSIS_WIDTH / 2, -KINEMATICS_CHASSIS_LENGTH / 2),
+      new Translation2d(KINEMATICS_CHASSIS_WIDTH / 2, -KINEMATICS_CHASSIS_LENGTH / 2));
   }
 
   public static final class ModuleConstants {
 
     //Robot Geometry
-    public static final double WheelDiameterMeters = Units.inchesToMeters(4.0);
-    public static final double DriveMotorGearRatio = 8.14 / 1.0; // Drive ratio of 8.14 : 1
-    public static final double TurningMotorGearRatio = 1.0 / (150.0 / 7.0); // Turning ratio of (150 / 7) : 1
-    public static final double DriveEncoderRot2Meter = DriveMotorGearRatio * Math.PI * WheelDiameterMeters;
-    public static final double TurningEncoderRot2Rad = TurningMotorGearRatio * 2 * Math.PI;
-    public static final double DriveEncoderRPM2MeterPerSec = DriveEncoderRot2Meter / 60.0;
-    public static final double TurningEncoderRPM2RadPerSec = TurningEncoderRot2Rad / 60.0;
-
-    //PID Config
-    public static final double TURNING_Proportional = 0.5;
-    public static final double TURNING_Integral = 0.0;
-    public static final double TURNING_Derivitive = 0.0;
+    public static final double MODULE_WHEEL_DIAMETER = Units.inchesToMeters(4.0);
+    public static final double MODULE_DRIVE_GEAR_RATIO = 8.14 / 1.0; // Drive ratio of 8.14 : 1
+    public static final double MODULE_TURN_GEAR_RATIO = 1.0 / (150.0 / 7.0); // Turning ratio of (150 / 7) : 1
+    public static final double MODULE_DRIVE_ROTATIONS_TO_METERS = MODULE_DRIVE_GEAR_RATIO * Math.PI * MODULE_WHEEL_DIAMETER;
+    public static final double MODULE_TURN_ROTATIONS_TO_RADIANS = MODULE_TURN_GEAR_RATIO * 2 * Math.PI;
+    public static final double MODULE_DRIVE_RPM_TO_MPS = MODULE_DRIVE_ROTATIONS_TO_METERS / 60.0;
+    public static final double TurningEncoderRPM2RadPerSec = MODULE_TURN_ROTATIONS_TO_RADIANS / 60.0;
 }
 
   public static class SwerveSubsystemConstants {
@@ -85,13 +75,6 @@ public final class Constants {
     public static final boolean REVERSED_BACK_RIGHT_MOTOR_DRIVE = true;
 
     // Turning encoder offsets
-
-    /* 
-     * TODO:
-     * Are offsets neccesary?
-     * I think if we simply copy the position of the absolute encoder to the turning encoders, it would acomplish the same thing, i think???
-    */
-
     public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
     public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(0.0);
     public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(-50);
@@ -109,16 +92,12 @@ public final class Constants {
     public static final double LIMIT_SOFT_ACCELERATION_TURN = 1;  // soft limit for acceleration (M/S^2)
   }
   public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
-    public static final double kDeadband = 0.05;
+    public static final int CONTROLLER_DRIVER_ID = 0;
+    public static final double CONTROLLER_DRIVER_DEADBAND = 0.05;
 
     // Joysticks
-    public static final int kDriverYAxis = 1;
-    public static final int kDriverXAxis = 0;
-    public static final int kDriverRotAxis = 4;
-
-    // Buttons
-    public static final int kDriverFieldOrientedButtonId = 1;
-    public static final int kDriverResetGyroButtonId = 2;
+    public static final int CONTROLLER_DRIVER_Y = 1;
+    public static final int CONTROLLER_DRIVER_X = 0;
+    public static final int CONTROLLER_DRIVER_Z = 4;
   }
 }

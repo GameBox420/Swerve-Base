@@ -1,17 +1,21 @@
 package frc.robot.subsystems;
 //kauai
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 //wpi
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//robot
-import frc.robot.Constants;
+import frc.robot.lib.Constants;
+import frc.robot.lib.SwerveModule;
 
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -58,6 +62,13 @@ public class SwerveDrive extends SubsystemBase {
 
     private final AHRS navX = new AHRS();
 
+    private final SwerveDrivePoseEstimator POSITION_ESTIMATOR = new SwerveDrivePoseEstimator(
+        Constants.Kinematics.KINEMATICS_DRIVE_CHASSIS,
+        getRotation2d(),
+        getModulePositions(),
+        new Pose2d()
+        );
+
     public SwerveDrive() {
         try {TimeUnit.SECONDS.sleep(1);}
         catch(InterruptedException e){}
@@ -71,19 +82,12 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Robot Heading", getRobotHeading());
         //SmartDashboard.putNumber("/timer", Timer.getMatchTime());
-
         SmartDashboard.putNumber("FL ABS ENC", MODULE_FRONT_LEFT.getAbsoluteEncoder());
-
-
         SmartDashboard.putNumber("FR ABS ENC", MODULE_FRONT_RIGHT.getAbsoluteEncoder());
-
-
         SmartDashboard.putNumber("BL ABS ENC", MODULE_BACK_LEFT.getAbsoluteEncoder());
-
-
         SmartDashboard.putNumber("BR ABS ENC", MODULE_BACK_RIGHT.getAbsoluteEncoder());
 
-
+        POSITION_ESTIMATOR.update(getRotation2d(), getModulePositions());
     }
 
     public double getRobotHeading() {
@@ -92,8 +96,16 @@ public class SwerveDrive extends SubsystemBase {
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getRobotHeading());
     }
+    public SwerveModulePosition[] getModulePositions() {
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        positions[0] = MODULE_FRONT_LEFT.getModulePosition();
+        positions[1] = MODULE_FRONT_RIGHT.getModulePosition();
+        positions[2] = MODULE_BACK_LEFT.getModulePosition();
+        positions[3] = MODULE_BACK_RIGHT.getModulePosition();
+        return positions;
+    }
     public void setChassisSpeed(ChassisSpeeds speed) {
-        SwerveModuleState states[] = Constants.Kinematics.kDriveKinematics.toSwerveModuleStates(speed);
+        SwerveModuleState states[] = Constants.Kinematics.KINEMATICS_DRIVE_CHASSIS.toSwerveModuleStates(speed);
         setModuleStates(states);
     }
     public void setModuleStates(SwerveModuleState states[]) {

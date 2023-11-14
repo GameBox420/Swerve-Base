@@ -6,7 +6,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.lib.Constants;
 import frc.robot.subsystems.SwerveDrive;
 
 public class JoystickDrive extends CommandBase {
@@ -43,9 +43,9 @@ public class JoystickDrive extends CommandBase {
 
 
         //Get joystick input from double suppliers
-        double xSpeed = SUPPLIER_xSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2 * (Math.abs(SUPPLIER_xSpeed.getAsDouble()) > 0.1 ? 1.0 : 0.0) ;
-        double ySpeed = SUPPLIER_ySpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2 * (Math.abs(SUPPLIER_ySpeed.getAsDouble()) > 0.1 ? 1.0 : 0.0)  ;
-        double rotSpeed = SUPPLIER_zSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_TURN * 0.2;
+        double xSpeed = SUPPLIER_xSpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2 * (Math.abs(SUPPLIER_xSpeed.getAsDouble()) > 0.1 ? 1.0 : 0.0);
+        double ySpeed = SUPPLIER_ySpeed.getAsDouble() * Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_DRIVE * 0.2 * (Math.abs(SUPPLIER_ySpeed.getAsDouble()) > 0.1 ? 1.0 : 0.0);
+        double rotSpeed = SUPPLIER_zSpeed.getAsDouble()* Constants.SwerveSubsystemConstants.LIMIT_SOFT_SPEED_TURN * 0.2;
         
 
         
