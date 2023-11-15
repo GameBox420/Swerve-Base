@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.commands.*;
 import frc.robot.lib.Constants;
 import frc.robot.lib.LimeLight;
-import frc.robot.lib.Constants.*;
 import frc.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,8 +57,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
 
     DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());

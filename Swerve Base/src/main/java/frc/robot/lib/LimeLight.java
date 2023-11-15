@@ -4,6 +4,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimeLight extends SubsystemBase {
@@ -36,6 +38,12 @@ public class LimeLight extends SubsystemBase {
     }
     public boolean getLimeLightTV() {
         return LIMELIGHT_TV.getBoolean(false);
+    }
+    public void setPipeline(double pipelineID){
+        LIMELIGHT.getEntry("pipeline").setNumber(pipelineID);
+    }
+    public Command changePipeline(double pipelineID) {
+        return Commands.runOnce(()->setPipeline(pipelineID));
     }
 
 }
