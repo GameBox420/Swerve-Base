@@ -29,7 +29,14 @@ public class RobotContainer {
 
   Trigger DRIVER_A = new Trigger(JOYSTICK_DRIVER.button(1));
   Trigger DRIVER_B = new Trigger(JOYSTICK_DRIVER.button(2));
-  Trigger DRIVER_LB= new Trigger(JOYSTICK_DRIVER.button(5));
+  Trigger DRIVER_X = new Trigger(JOYSTICK_DRIVER.button(3));
+  Trigger DRIVER_Y = new Trigger(JOYSTICK_DRIVER.button(4));
+  Trigger DRIVER_L1= new Trigger(JOYSTICK_DRIVER.button(5));
+  Trigger DRIVER_R1= new Trigger(JOYSTICK_DRIVER.button(6));
+  Trigger DRIVER_START= new Trigger(JOYSTICK_DRIVER.button(7));
+  Trigger DRIVER_BACK = new Trigger(JOYSTICK_DRIVER.button(8));
+  Trigger DRIVER_L3 = new Trigger(JOYSTICK_DRIVER.button(9));
+  Trigger DRIVER_R3 = new Trigger(JOYSTICK_DRIVER.button(10));
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -63,7 +70,10 @@ public class RobotContainer {
 
     DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());
     DRIVER_B.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroRobotHeading());
-    DRIVER_LB.whileTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
+    DRIVER_L1.whileTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
+    DRIVER_R1.whileTrue(new LimeLight_Strafe(SUBSYSTEM_LIMELIGHT, SUBSYSTEM_SWERVEDRIVE));
+    DRIVER_START.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(0));
+    DRIVER_BACK.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(1));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
