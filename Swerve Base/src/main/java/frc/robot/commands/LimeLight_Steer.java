@@ -18,7 +18,7 @@ public class LimeLight_Steer extends CommandBase {
         SUBSYSTEM_LIMELIGHT = limeLight;
         SUBSYSTEM_SWERVEDRIVE = drive;
 
-        TurnPID = new PIDController(0, 0, 0);
+        TurnPID = new PIDController(0.03, 0, 0.0);
     }
 
     @Override
@@ -35,8 +35,6 @@ public class LimeLight_Steer extends CommandBase {
         ChassisSpeeds targetState = ChassisSpeeds.fromFieldRelativeSpeeds(0.0,0.0,TurnPID.calculate(currentAngle,targetAngle),SUBSYSTEM_SWERVEDRIVE.getRotation2d());
 
         SUBSYSTEM_SWERVEDRIVE.setChassisSpeed(targetState);
-
-
     }
     @Override
     public void end(boolean interrupted) {

@@ -64,7 +64,7 @@ public class RobotContainer {
 
     DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());
     DRIVER_B.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroRobotHeading());
-    DRIVER_LB.onTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
+    DRIVER_LB.whileTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
